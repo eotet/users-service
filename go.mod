@@ -3,7 +3,7 @@ module github.com/eotet/users-service
 go 1.24.2
 
 require (
-	github.com/eotet/project-protos v1.0.2
+	github.com/eotet/project-protos v1.0.3
 	google.golang.org/grpc v1.72.0
 	google.golang.org/protobuf v1.36.6
 	gorm.io/gorm v1.26.1

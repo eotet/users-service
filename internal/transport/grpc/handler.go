@@ -43,7 +43,7 @@ func (h *Handler) CreateUser(ctx context.Context, req *userpb.CreateUserRequest)
 	}, nil
 }
 
-func (h *Handler) GetUser(ctx context.Context, req *userpb.GetUserRequest) (*userpb.User, error) {
+func (h *Handler) GetUser(ctx context.Context, req *userpb.GetUserRequest) (*userpb.GetUserResponse, error) {
 	user, err := h.svc.GetUserByID(req.Id)
 	if err != nil {
 		if errors.Is(err, errs.ErrUserNotFound) {
@@ -52,9 +52,11 @@ func (h *Handler) GetUser(ctx context.Context, req *userpb.GetUserRequest) (*use
 		return nil, status.Errorf(codes.Internal, "failed to get user: %v", err)
 	}
 
-	return &userpb.User{
-		Id:    uint32(user.ID),
-		Email: user.Email,
+	return &userpb.GetUserResponse{
+		User: &userpb.User{
+			Id:    uint32(user.ID),
+			Email: user.Email,
+		},
 	}, nil
 }
 
@@ -75,7 +77,7 @@ func (h *Handler) ListUsers(ctx context.Context, req *emptypb.Empty) (*userpb.Li
 	return &response, nil
 }
 
-func (h *Handler) UpdateUser(ctx context.Context, req *userpb.UpdateUserRequest) (*userpb.User, error) {
+func (h *Handler) UpdateUser(ctx context.Context, req *userpb.UpdateUserRequest) (*userpb.UpdateUserResponse, error) {
 	updatedUser, err := h.svc.UpdateUserByID(req.Id, user.UpdateUserRequest{
 		Email:    &req.Email,
 		Password: &req.Password,
@@ -87,9 +89,11 @@ func (h *Handler) UpdateUser(ctx context.Context, req *userpb.UpdateUserRequest)
 		return nil, status.Errorf(codes.Internal, "failed to update user: %v", err)
 	}
 
-	return &userpb.User{
-		Id:    uint32(updatedUser.ID),
-		Email: updatedUser.Email,
+	return &userpb.UpdateUserResponse{
+		User: &userpb.User{
+			Id:    uint32(updatedUser.ID),
+			Email: updatedUser.Email,
+		},
 	}, nil
 }
 
